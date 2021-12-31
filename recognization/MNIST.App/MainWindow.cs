@@ -136,9 +136,9 @@ namespace MNIST.App
                         Color color = clonedBmp.GetPixel(x, y);
                         // 规范化值
                         //    将数值的RGB通道取平均值
-                        double average = (color.R + color.G + color.B) / 3.0;
+                        double average = (color.R + color.G + color.B) / 3.0 /255.0;
                         //    将平均值范围缩小到0到1之间
-                        double oneValue = (255-average) ;
+                        double oneValue = (1-average) ;
                         //    将黑白翻转，并加上0.5，使大部分值为非零，并与训练时的数据格式一样
 
                         inputTensor[0,0,y,x] = (float)oneValue;

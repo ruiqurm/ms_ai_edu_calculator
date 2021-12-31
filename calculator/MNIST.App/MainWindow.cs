@@ -269,8 +269,8 @@ namespace MNIST.App
                             {
                                 //var color = clonedBmp.GetPixel(y, x);
                                 var color = clonedBmp.GetPixel(x, y);
-                                double average = (color.R + color.G + color.B) / 3.0;
-                                image[0, 0, y, x] = (float)(255 - average);
+                                double average = (color.R + color.G + color.B) / 3.0 / 255;
+                                image[0, 0, y, x] = (float)(1 - average);
                             }
                         }
 
