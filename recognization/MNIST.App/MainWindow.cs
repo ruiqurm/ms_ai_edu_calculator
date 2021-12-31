@@ -30,6 +30,7 @@ namespace MNIST.App
 
         // 在窗体中声明模型类，以便在多次推理时能重用。
         private InferenceSession model;
+        private List<string> operator_map;
         // 绘图对象，用于清除输入等。
         private Graphics graphics;
         // 每次画线的起始位置。
@@ -45,8 +46,8 @@ namespace MNIST.App
             // 新建模型
             string workingDirectory = Environment.CurrentDirectory;
             string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-            //model = new InferenceSession(projectDirectory+"/mnist-8.onnx");
             model = new InferenceSession(projectDirectory + "/mynet.onnx");
+            operator_map = new List<string> {"+","-","×","÷","(",")"};
             // 初始化手写区为其大小的位图，以便进行操作。
             writeArea.Image = new Bitmap(writeArea.Width, writeArea.Height);
             // 获取手写区位图的绘图类，以便以后重置图像。
@@ -146,7 +147,6 @@ namespace MNIST.App
                 // 2. 推理
                 //    将数组放到另一层列表中，使其成为和推理函数一样的双层列表。
 
-                //var input = new List<NamedOnnxValue> { NamedOnnxValue.CreateFromTensor<float>("Input3", inputTensor) };
                 var input = new List<NamedOnnxValue> { NamedOnnxValue.CreateFromTensor<float>("input", inputTensor) };
                 using (var results = model.Run(input))
                 {
@@ -156,7 +156,14 @@ namespace MNIST.App
                     var l = r.AsTensor<float>().ToList();
                     var (number, index) = l.Select((n, i) => (n, i)).Max();
                     Console.WriteLine("Output index: {0}", index);
-                    outputText.Text = index.ToString();
+                    if (index > 9)
+                    {
+                        outputText.Text = operator_map[index - 10]; 
+                    }
+                    else
+                    {
+                        outputText.Text = index.ToString();
+                    }
                 }
             }
         }
