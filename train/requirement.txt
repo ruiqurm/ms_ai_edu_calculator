@@ -1,0 +1,4 @@
+torch == 1.10.1
+torchnet == 0.0.4
+numpy == 1.21.5
+matplotlib == 3.5.1
